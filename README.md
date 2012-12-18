@@ -5,7 +5,7 @@ Generate api pages with symphony cms
 ## Dependencies
 
 - php >= 5.3.6
-- all other dependencies should already be met be Symphony CMS
+- all other dependencies should already be met by Symphony CMS
 
 ## Usage
 
@@ -13,7 +13,7 @@ Generate api pages with symphony cms
 - set default format and format url parameter in `System/Preferences`
 - set pagetype to `API` (do not set any pagetype other then API when using the `content type mappings` extension)
 
-- set your templates output format to `xml`, e.g.: 
+- set your template's output format to `xml`, e.g.: 
 
 		<?xml version="1.0" encoding="UTF-8"?>
 		<xsl:stylesheet version="1.0"
@@ -27,7 +27,7 @@ Generate api pages with symphony cms
 
 ## TODOS
 
-- make XML to JSON parser exchangable
+- make XMLtoJSON parser exchangable
 - add more output formats like yml, python, etc. 
 
 
