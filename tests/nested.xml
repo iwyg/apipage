@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data id="adsd">
+	<firstnode>
+		<secondnode>value</secondnode>
+		<thirdnode>value</thirdnode>
+	</firstnode>
+	<alone-and-attributes id="1">value</alone-and-attributes>
+	<arrayish>
+		<item>foo</item>
+		<item>bar</item>
+		<item>baz</item>
+	</arrayish>
+	<arrayish-with-attributes>
+		<isitem>foo</isitem>
+		<isitem>bar</isitem>
+		<isitem>baz</isitem>
+	</arrayish-with-attributes>
+</data>

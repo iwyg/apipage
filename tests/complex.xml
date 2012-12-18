@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+	<status>ok</status>
+	<content>
+		<entries>
+			<entry>
+				<title handle="test-entry-1">test entry 1</title>
+				<description>Etiam porta sem malesuada magna mollis euismod.</description>
+				<created iso="2012-09-26T16:42:00+01:00" time="16:42" weekday="3" offset="+0100">2012-09-26</created>
+				<status>
+				</status>
+				<system-date>
+					<created iso="2012-11-06T14:14:47+00:00" time="14:14" weekday="2" offset="+0000">2012-11-06</created>
+					<modified iso="2012-12-14T09:40:20+00:00" time="09:40" weekday="5" offset="+0000">2012-12-14</modified>
+				</system-date>
+			</entry>
+			<entry>
+				<title handle="test-entry-2">test entry 2</title>
+				<description>Etiam porta sem malesuada magna mollis euismod.</description>
+				<created iso="2012-09-26T16:42:00+01:00" time="16:42" weekday="3" offset="+0100">2012-09-26</created>
+				<system-date>
+					<created iso="2012-11-08T12:17:15+00:00" time="12:17" weekday="4" offset="+0000">2012-11-08</created>
+					<modified iso="2012-12-14T09:40:27+00:00" time="09:40" weekday="5" offset="+0000">2012-12-14</modified>
+				</system-date>
+			</entry>
+		</entries>
+	</content>
+</response>
