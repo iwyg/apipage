@@ -22,5 +22,8 @@
 		<release version="0.1" date="2012-12-18" min="2.3.0" max="2.3.x">
 			- fix parser
 		</release>
+		<release version="0.1.2" date="2012-12-19" min="2.3.0" max="2.3.x">
+			- added test
+		</release>
 	</releases>
 </extension>
