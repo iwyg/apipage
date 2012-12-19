@@ -1,7 +1,9 @@
 <?php
 
+require_once dirname(__FILE__) . '/lib/interfaceparser.php';
 require_once dirname(__FILE__) . '/lib/xmltoarray.php';
 require_once dirname(__FILE__) . '/lib/xmltojson.php';
+require_once dirname(__FILE__) . '/lib/apipage.php';
 
 /**
  * Extension_JSONPage
@@ -17,25 +19,17 @@ class Extension_APIPage extends Extension
 {
 
     /**
-     * trigger
+     * apipage
      *
-     * @var Boolean
+     * @var APIPage
      * @access protected
      */
-    protected $trigger = false;
-
-
-    /**
-     *
-     */
-    protected static $mime = array(
-        'xml'  => 'application/xml',
-        'json' => 'application/json',
-    );
+    protected $apipage;
 
     /**
      * getSubscribedDelegates
      *
+     * @see Toolkit\Extension::getSubscribedDelegates()
      * @access public
      * @return void
      */
@@ -45,12 +39,12 @@ class Extension_APIPage extends Extension
             array(
                 'page' => '/frontend/',
                 'delegate' => 'FrontendOutputPostGenerate',
-                'callback' => 'xmlTojson'
+                'callback' => 'parseXML'
             ),
             array(
                 'page' => '/frontend/',
                 'delegate' => 'FrontendPreRenderHeaders',
-                'callback' => 'setContentType'
+                'callback' => 'setOutputTrigger'
             ),
             array(
                 'page' => '/system/preferences/',
@@ -66,49 +60,33 @@ class Extension_APIPage extends Extension
     }
 
     /**
-     * xmlToJSON
+     * parseXML
      *
      * @param Mixed $context
      * @access public
      * @return void
      */
-    public function xmlToJSON($context)
+    public function parseXML($context)
     {
-        if ($this->trigger) {
-            $parser = new XmlToJSON($context['output']);
-            $context['output'] = $parser->parse();
+        if ($this->apipage && $this->apipage->trigger) {
+            $context['output'] = $this->apipage->parse(new XmlToJSON($context['output']));
         }
     }
 
     /**
-     * setContentType
+     * setOutputTrigger
      *
      * @param Mixed $context
      * @access public
      * @return void
      */
-    public function setContentType($context)
+    public function setOutputTrigger($context)
     {
+        $this->apipage = new APIPage(Frontend::Page(), Symphony::Configuration()->get('apipage'));
 
-        $params = Frontend::Page()->Params();
-
-        if (in_array('API', $params['page-types'])) {
-
-            $param = Symphony::Configuration()->get('param-selector', 'apipage');
-            $default = Symphony::Configuration()->get('default-format', 'apipage');
-
-            $format = isset($params[$param]) ? strtolower($params[$param]) : $default;
-
-            if (!isset(self::$mime[$format])) {
-                throw new SymphonyErrorPage('format does not exist', 'API is having issues', 'generic', array('header' => 'HTTP/1.0 404 Not Found'));
-            }
-
-            Frontend::Page()->addHeaderToPage('Content-Type', self::$mime[$format]);
-
-            if (strtolower($format) === 'json') {
-                $this->trigger = true;
-            }
-        }
+        return $this->apipage->setOutput(function () {
+            throw new SymphonyErrorPage('format does not exist', 'API is having issues', 'generic', array('header' => 'HTTP/1.0 404 Not Found'));
+        });
     }
 
     /**

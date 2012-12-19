@@ -10,7 +10,7 @@
  * @author Thomas Appel <thomas@soario.com>
  * @license MIT
  */
-class XmlToArray
+class XmlToArray implements InterfaceParser
 {
 
     /**
