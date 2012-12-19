@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension id="apipage" status="experimental" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>APIPage</name>
-	<description>json FE output</description>
+	<description>API Page parser</description>
 	<types>
 		<type>Frontend</type>
 	</types>
