@@ -18,6 +18,10 @@ require_once dirname(__FILE__) . '/lib/apipage.php';
 class Extension_APIPage extends Extension
 {
 
+    public static $defaults = array(
+        'default-format' => 'json',
+        'param-selector' => 'url-format',
+    );
     /**
      * apipage
      *
@@ -57,6 +61,30 @@ class Extension_APIPage extends Extension
                 'callback' => 'savePreferences'
             ),
         );
+    }
+
+    /**
+     * install
+     *
+     * @access public
+     * @return void
+     */
+    public function install()
+    {
+        Symphony::Configuration()->setArray(array('apipage' => self::$defaults));
+        return Symphony::Configuration()->write();
+    }
+
+    /**
+     * uninstall
+     *
+     * @access public
+     * @return void
+     */
+    public function uninstall()
+    {
+        Symphony::Configuration()->remove('apipage');
+        return Symphony::Configuration()->write();
     }
 
     /**
