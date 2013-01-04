@@ -1,6 +1,6 @@
 ## Synopsis
 
-Generate api pages with symphony cms  
+Easily generate api pages with Symphony CMS.   
 
 ## Dependencies
 
@@ -24,14 +24,17 @@ Generate api pages with symphony cms
 				<response> <!-- do your transformations here --></response>
 			</xsl:template>
 		</xsl:stylesheet>
+		
+- do your data transformation as you would usually do.		
+		
+## FAQ
+
+- **Q:** why no php 5.2?
+- **A:** Brace yourself, php 5.5 is comming.
+- **Q:** I can do all this using a xml to json stylesheet. So why using this extension?
+- **A:** Sure you can. The downside of doing so is, that all these stylesheets are a bit restricted and perform expensive string operations. The extensions XMLtoJSON parser uses the php C extension SimpleXML, which is much faster. It's reliable and it's tested.  
 
 ## TODOS
 
 - make XMLtoJSON parser exchangable
 - add more output formats like yml, python, etc. 
-
-
-
-
-
-

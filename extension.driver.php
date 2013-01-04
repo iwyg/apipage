@@ -10,7 +10,7 @@ require_once dirname(__FILE__) . '/lib/apipage.php';
  *
  * @uses Extension
  * @package Symphony\Extensions\APIPage
- * @version 1.0
+ * @version 1.2
  * @copyright 2012-2015 Soario Inc. <http://soario.com>
  * @author Thomas Appel <thomas@soario.com>
  * @license MIT
@@ -18,6 +18,10 @@ require_once dirname(__FILE__) . '/lib/apipage.php';
 class Extension_APIPage extends Extension
 {
 
+    /**
+     *  Default configuration
+     *  @var Array
+     */
     public static $defaults = array(
         'default-format' => 'json',
         'param-selector' => 'url-format',
