@@ -54,15 +54,19 @@ class XmlToArrayTest extends PHPUnit_Framework_TestCase
         $this->assertContains('bar', $array['data']['arrayish']['item']);
         $this->assertContains('baz', $array['data']['arrayish']['item']);
     }
-    ///**
-    // * @dataProvider providesComplexXML
-    // */
-    //public function testParseComplexXML($xml)
-    //{
-    //    $parser = new XmlToArray($xml);
-    //    $array = $parser->parse();
-    //    var_dump($array);
-    //}
+
+    /**
+     * @dataProvider providesComplexXML
+     */
+    public function testParseEmptyNodesWithAttributes($xml)
+    {
+        $parser = new XmlToArray($xml);
+        $array = $parser->parse();
+
+        $this->assertTrue(isset($array['response']['empty']));
+        $this->assertTrue(isset($array['response']['empty']['@attributes']));
+        $this->assertTrue(isset($array['response']['empty']['@attributes']['id']));
+    }
 
     /**
      * providesBasicXML

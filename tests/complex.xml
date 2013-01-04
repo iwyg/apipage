@@ -24,5 +24,10 @@
 				</system-date>
 			</entry>
 		</entries>
+		<foo>bar
+		</foo>
+		<bar>baz</bar>
 	</content>
+	<empty id="12" foo="bar">
+	</empty>
 </response>

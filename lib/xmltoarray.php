@@ -57,9 +57,8 @@ class XmlToArray implements InterfaceParser
     protected function parseXMLOBJ(SimpleXMLElement $xml, array &$result = array())
     {
 
-        $attributes = (array)$xml->attributes(null, true);
-
-        $children = $xml->children(null, true);
+        $children = $xml->children();
+        $attributes = (array)$xml->attributes();
 
         foreach ($children as $name => $child) {
 
@@ -84,8 +83,8 @@ class XmlToArray implements InterfaceParser
         if (!empty($attributes)) {
             if (!is_null($text)) {
                 $result['value'] = $text;
-                $result = array_merge($attributes, $result);
             }
+            $result = array_merge($attributes, $result);
             return $result;
         } else if (!is_null($text)) {
             $result = $text;
