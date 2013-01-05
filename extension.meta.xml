@@ -16,17 +16,20 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="0.1 pre" date="2012-12-08" min="2.3.0" max="2.3.x">
-			- initial release
+		<release version="0.1.4" date="2013-01-05" min="2.3.0" max="2.3.x">
+			- parser error
 		</release>
-		<release version="0.1" date="2012-12-18" min="2.3.0" max="2.3.x">
-			- fix parser
+		<release version="0.1.3" date="2013-01-04" min="2.3.0" max="2.3.x">
+			- added installation routine
 		</release>
 		<release version="0.1.2" date="2012-12-19" min="2.3.0" max="2.3.x">
 			- added test
 		</release>
-		<release version="0.1.3" date="2013-01-04" min="2.3.0" max="2.3.x">
-			- added installation routine
+		<release version="0.1" date="2012-12-18" min="2.3.0" max="2.3.x">
+			- fix parser
+		</release>
+		<release version="0.1 pre" date="2012-12-08" min="2.3.0" max="2.3.x">
+			- initial release
 		</release>
 	</releases>
 </extension>
