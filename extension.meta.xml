@@ -16,6 +16,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="0.1.5" date="2013-01-15" min="2.3.0" max="2.3.x">
+			- bugfix
+		</release>
 		<release version="0.1.4" date="2013-01-05" min="2.3.0" max="2.3.x">
 			- parser error
 		</release>

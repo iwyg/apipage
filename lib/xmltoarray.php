@@ -6,7 +6,7 @@
  * Parse XML to corrseponding Array structure.
  *
  * @package Symphony\Extensions\APIPage
- * @version 1.0
+ * @version 1.3
  * @author Thomas Appel <thomas@soario.com>
  * @license MIT
  */
