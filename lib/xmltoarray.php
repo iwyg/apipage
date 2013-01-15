@@ -57,21 +57,27 @@ class XmlToArray implements InterfaceParser
     protected function parseXMLOBJ(SimpleXMLElement $xml, array &$result = array())
     {
 
-        $children = $xml->children();
+        $children = $xml->children(null, false);
         $attributes = (array)$xml->attributes();
 
         foreach ($children as $name => $child) {
 
-            if ($sibling = $child->xpath('preceding-sibling::* | following-sibling::*')) {
-
-                if (current($sibling)->getName() === $name) {
-                    $result[$name][] = $this->parseXMLOBJ($child);
-                    continue;
-                }
+            if (isset($result[$name])) {
+                continue;
             }
 
-            $result[$name] = $this->parseXMLOBJ($child);
+            $siblings = $child->xpath(sprintf("following-sibling::*[name() = '%s']", $name, $name));
 
+            if (!empty($siblings)) {
+
+                $result[$name][] = $this->parseXMLOBJ($child);
+
+                foreach ($siblings as $sibling) {
+                    $result[$name][] = $this->parseXMLOBJ($sibling);
+                }
+                continue;
+            }
+            $result[$name] = $this->parseXMLOBJ($child);
         }
 
         $text = trim((string)$xml);
