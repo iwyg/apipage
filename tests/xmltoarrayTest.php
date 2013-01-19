@@ -39,7 +39,7 @@ class XmlToArrayTest extends PHPUnit_Framework_TestCase
         $parser = new XmlToArray($xml);
         $array = $parser->parse();
 
-        //$this->assertTrue(isset($array['data']['alone-and-attributes']) && isset($array['data']['alone-and-attributes']['@attributes']));
+        $this->assertTrue(isset($array['data']['alone-and-attributes']) && isset($array['data']['alone-and-attributes']['@attributes']));
     }
 
     /**
@@ -73,6 +73,16 @@ class XmlToArrayTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider providesXMLWithZeroValue
+     */
+    public function testParseXMLWithZeroValue($xml)
+    {
+        $parser = new XmlToArray($xml);
+        $array = $parser->parse();
+        $this->assertEquals('0', $array['response']['node']);
+    }
+
+    /**
      * providesBasicXML
      */
     public function providesBasicXML()
@@ -94,6 +104,14 @@ class XmlToArrayTest extends PHPUnit_Framework_TestCase
     public function providesComplexXML()
     {
         return array(array(file_get_contents(dirname(__FILE__) . '/complex.xml')));
+    }
+
+    /**
+     * providesXMLWithZeroValue
+     */
+    public function providesXMLWithZeroValue()
+    {
+        return array(array(file_get_contents(dirname(__FILE__) . '/nullvalue.xml')));
     }
 
 }

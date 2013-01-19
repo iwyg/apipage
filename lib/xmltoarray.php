@@ -61,6 +61,7 @@ class XmlToArray implements InterfaceParser
         $attributes = (array)$xml->attributes();
         $text = trim((string)$xml);
 
+
         foreach ($children as $name => $child) {
 
             if (isset($result[$name])) {
@@ -83,7 +84,7 @@ class XmlToArray implements InterfaceParser
         }
 
 
-        if (empty($text)) {
+        if (strlen($text) === 0) {
             $text = null;
         }
 
