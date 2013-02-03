@@ -67,7 +67,7 @@ class XmlToArrayTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(isset($array['response']['empty']['@attributes']));
         $this->assertTrue(isset($array['response']['empty']['@attributes']['id']));
         $this->assertTrue(isset($array['response']['odd-content']));
-        $this->assertTrue(isset($array['response']['odd-content']['emptynode']));
+        $this->assertTrue(is_null($array['response']['odd-content']['emptynode']));
         $this->assertTrue(isset($array['response']['odd-content']['entry']));
         $this->assertEquals(3, count($array['response']['odd-content']['entry']));
     }

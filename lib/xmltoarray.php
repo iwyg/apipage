@@ -100,6 +100,6 @@ class XmlToArray implements InterfaceParser
             $result = $text;
             return $result;
         }
-        return (empty($result) && is_null($text)) ? '' : $result;
+        return (empty($result) && is_null($text)) ? null : $result;
     }
 }
