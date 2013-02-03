@@ -91,13 +91,17 @@ class XmlToArray implements InterfaceParser
 
         if (!empty($attributes)) {
             if (!is_null($text)) {
-                $result['value'] = $text;
+                $result['text'] = $text;
             }
             $result = array_merge($attributes, $result);
             return $result;
 
         } else if (!is_null($text)) {
-            $result = $text;
+            if (!empty($result)) {
+                $result['text'] = $text;
+            } else {
+                $result = $text;
+            }
             return $result;
         }
         return (empty($result) && is_null($text)) ? null : $result;

@@ -15,4 +15,36 @@
 		<isitem>bar</isitem>
 		<isitem>baz</isitem>
 	</arrayish-with-attributes>
+	<categories>
+		<name>foo</name>
+		<handle>bar</handle>
+		<article>
+			<title>A</title>
+			<description>A</description>
+			<article>
+				<title>A</title>
+				<description>A</description>
+			</article>
+		</article>
+		<article>
+			<title>B</title>
+			<description>B</description>
+			<article>
+				<title>A</title>
+				<description>A</description>
+			</article>
+		</article>
+		<article>
+			<title>C</title>
+			<description>C</description>
+			<article>
+				<title>A</title>
+				<description>A</description>
+			</article>
+		</article>
+	</categories>
+	<texttest>
+		string
+		<node>some contents</node>
+	</texttest>
 </data>
