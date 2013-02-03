@@ -16,6 +16,12 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="0.1.6" date="2013-02-03" min="2.3.0" max="2.3.x">
+			- various fixes
+			- fix empty nodes
+			- fix nodes with mixed content (text and childnodes)
+			- textnodes with attributes no longer return `node: {@attributes: {}, value: text}` but `node: {@attributes: {}, text: text}`
+		</release>
 		<release version="0.1.5" date="2013-01-15" min="2.3.0" max="2.3.x">
 			- bugfix
 		</release>
