@@ -62,13 +62,14 @@ class XmlToArray implements InterfaceParser
         $text = trim((string)$xml);
 
 
+
         foreach ($children as $name => $child) {
 
             if (isset($result[$name])) {
                 continue;
             }
 
-            $siblings = $child->xpath(sprintf("following-sibling::*[name() = '%s']", $name, $name));
+            $siblings = $child->xpath(sprintf("following-sibling::*[name() = '%s']", $name));
 
             if (empty($siblings)) {
                 $result[$name] = $this->parseXMLOBJ($child);
@@ -89,19 +90,16 @@ class XmlToArray implements InterfaceParser
         }
 
         if (!empty($attributes)) {
-
             if (!is_null($text)) {
                 $result['value'] = $text;
             }
-
             $result = array_merge($attributes, $result);
             return $result;
 
         } else if (!is_null($text)) {
-
             $result = $text;
             return $result;
         }
-        return $result;
+        return (empty($result) && is_null($text)) ? '' : $result;
     }
 }

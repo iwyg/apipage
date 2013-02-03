@@ -81,6 +81,17 @@ class XmlToArrayTest extends PHPUnit_Framework_TestCase
         $array = $parser->parse();
         $this->assertEquals('0', $array['response']['node']);
     }
+    /**
+     * @dataProvider providesXMLWithZeroValue
+     */
+    public function testParseXMLWithEmptyNodes($xml)
+    {
+        $parser = new XmlToArray($xml);
+        $array = $parser->parse();
+        $this->assertEquals('', $array['response']['empty']);
+    }
+
+
 
     /**
      * providesBasicXML
