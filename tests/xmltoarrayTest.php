@@ -53,7 +53,6 @@ class XmlToArrayTest extends PHPUnit_Framework_TestCase
         $this->assertContains('foo', $array['data']['arrayish']['item']);
         $this->assertContains('bar', $array['data']['arrayish']['item']);
         $this->assertContains('baz', $array['data']['arrayish']['item']);
-        var_dump($array);
     }
 
     /**

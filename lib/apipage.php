@@ -36,6 +36,21 @@ class APIPage
     public $trigger = false;
 
     /**
+     * trigger
+     *
+     * @var string|null
+     */
+    public $jsonp;
+
+    /**
+     * accept
+     *
+     * @var Mixed
+     * @access protected
+     */
+    protected $accept;
+
+    /**
      * Content Type Map
      *
      * @var Array
@@ -43,8 +58,21 @@ class APIPage
      * @access protected
      */
     protected static $mime = array(
-        'xml'  => 'application/xml',
-        'json' => 'application/json',
+        'xml'   => 'application/xml',
+        'json'  => 'application/json',
+        'jsonp' => 'application/javascript',
+    );
+
+    /**
+     * map
+     *
+     * @var array
+     */
+    protected static $map = array(
+        'xml'   => 'xml',
+        'json'  => 'json',
+        'jsonp' => 'jsonp',
+        'javascript' => 'jsonp'
     );
 
     /**
@@ -91,7 +119,7 @@ class APIPage
             $param   = $this->conf['param-selector'];
             $default = $this->conf['default-format'];
 
-            $format  = isset($params[$param]) ? strtolower($params[$param]) : $default;
+            $format  = isset($params[$param]) ? strtolower($params[$param]) : ($this->acceptHeader() ? $this->acceptHeader() : $default);
 
             if (!isset(static::$mime[$format])) {
                 return $errorHandler();
@@ -101,7 +129,44 @@ class APIPage
 
             if (strtolower($format) !== 'xml') {
                 $this->trigger = true;
+                $this->jsonp = $format === 'jsonp' ? $this->conf['jsonp-var'] : null;
             }
         }
     }
+
+    /**
+     * getAcceptFormat
+     *
+     * @access public
+     * @return string
+     */
+    public function getAcceptFormat()
+    {
+        return $this->accept;
+    }
+
+    protected function acceptHeader()
+    {
+        if (isset($this->accept)) {
+            return $this->accept;
+        }
+        $header = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : null;
+
+
+        if (is_null($header)) {
+            return false;
+        }
+        $accept = explode(',', preg_replace('/(;.*|\w+\/)/', null, $header));
+
+        if (!empty($accept)) {
+            foreach ($accept as $format) {
+                if (array_key_exists($format, static::$map)) {
+                    $this->accept = static::$map[$format];
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

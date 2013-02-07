@@ -25,6 +25,7 @@ class Extension_APIPage extends Extension
     public static $defaults = array(
         'default-format' => 'json',
         'param-selector' => 'url-format',
+        'jsonp-var'      => 'api_read'
     );
     /**
      * apipage
@@ -100,8 +101,11 @@ class Extension_APIPage extends Extension
      */
     public function parseXML($context)
     {
+
         if ($this->apipage && $this->apipage->trigger) {
-            $context['output'] = $this->apipage->parse(new XmlToJSON($context['output']));
+            $output = $this->apipage->parse(new XmlToJSON($context['output']));
+            $context['output'] = !is_null($this->apipage->jsonp) ?
+                sprintf('var %s = %s;', $this->apipage->jsonp, $output) : $output;
         }
     }
 
@@ -117,7 +121,7 @@ class Extension_APIPage extends Extension
         $this->apipage = new APIPage(Frontend::Page(), Symphony::Configuration()->get('apipage'));
 
         return $this->apipage->setOutput(function () {
-            throw new SymphonyErrorPage('format does not exist', 'API is having issues', 'generic', array('header' => 'HTTP/1.0 404 Not Found'));
+            throw new SymphonyErrorPage('format does not exist', 'API is having issues', 'generic', array('header' => 'HTTP/1.0 406 Not Acceptable'));
         });
     }
 
@@ -149,14 +153,25 @@ class Extension_APIPage extends Extension
         $selected = isset($conf['default-format']) ? $conf['default-format'] : 'json';
         $selector = isset($conf['param-selector']) ? $conf['param-selector'] : 'url-format';
 
-        $options = array(array('xml', ($selected === 'xml') ? true : false, 'xml'),
-            array('json', ($selected === 'json') ? true : false, 'json')
+
+        $options = array(
+            array('xml', ($selected === 'xml') ? true : false, 'xml'),
+            array('json', ($selected === 'json') ? true : false, 'json'),
+            array('jsonp', ($selected === 'jsonp') ? true : false, 'jsonp')
         );
         $select = Widget::Select('settings[apipage][default-format]', $options);
 
         $label = Widget::Label(__('default output format'), $select);
-
         $div->appendChild($label);
+
+        if ($selected === 'jsonp') {
+
+            $label = Widget::Label(__('JSONP variable name'), Widget::Input('settings[apipage][jsonp-var]',
+                isset($conf['jsonp-var']) ? $conf['jsonp-var'] : 'api_read', 'text')
+            );
+
+            $div->appendChild($label);
+        }
 
         $selector = Widget::Input('settings[apipage][param-selector]', $selector, 'text');
 
@@ -165,6 +180,7 @@ class Extension_APIPage extends Extension
         $div->appendChild($label);
 
         $fieldset->appendChild($div);
+
         $wrapper->appendChild($fieldset);
     }
 
@@ -182,5 +198,21 @@ class Extension_APIPage extends Extension
             Symphony::Configuration()->set($key, $val, 'apipage');
         }
         Symphony::Configuration()->write();
+    }
+
+    /**
+     * update
+     *
+     * @param mixed $previousVersion
+     * @access public
+     * @return mixed
+     */
+    public function update($previousVersion)
+    {
+        if (version_compare($previous_version, '0.1.7', '<')) {
+            Symphony::Configuration()->set('jsonp-var', self::$defaults['jsonp-var'], 'apipage');
+            Symphony::Configuration()->write();
+        }
+        return true;
     }
 }

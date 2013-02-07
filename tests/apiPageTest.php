@@ -25,6 +25,69 @@ class ApiPageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * testAcceptHeader
+     * @test
+     */
+    public function testAcceptHeaderJavascript()
+    {
+        $page = $this->getPageMockObj();
+
+        $apipage = new ApiPage($page, array(
+            'default-format' => 'python',
+            'param-selector' => 'url-format',
+            'jsonp-var'       => 'api_read'
+        ));
+
+        $_SERVER['HTTP_ACCEPT'] = 'application/javascript';
+        $apipage->setOutput(function () {
+            throw new APIPageTestException('test');
+        });
+        $this->assertEquals('jsonp', $apipage->getAcceptFormat());
+    }
+    /**
+     * testAcceptHeaderXML
+     *
+     * @test
+     */
+    public function testAcceptHeaderXML()
+    {
+        $page = $this->getPageMockObj();
+
+        $apipage = new ApiPage($page, array(
+            'default-format' => 'python',
+            'param-selector' => 'url-format',
+            'jsonp-var'       => 'api_read'
+        ));
+
+        $_SERVER['HTTP_ACCEPT'] = 'application/xml';
+        $apipage->setOutput(function () {
+            throw new APIPageTestException('test');
+        });
+        $this->assertEquals('xml', $apipage->getAcceptFormat());
+    }
+
+    /**
+     * testAcceptHeaderJSON
+     *
+     * @test
+     */
+    public function testAcceptHeaderJSON()
+    {
+        $page = $this->getPageMockObj();
+
+        $apipage = new ApiPage($page, array(
+            'default-format' => 'python',
+            'param-selector' => 'url-format',
+            'jsonp-var'       => 'api_read'
+        ));
+
+        $_SERVER['HTTP_ACCEPT'] = 'application/json';
+        $apipage->setOutput(function () {
+            throw new APIPageTestException('test');
+        });
+        $this->assertEquals('json', $apipage->getAcceptFormat());
+    }
+    /**
      * testSetTrigger
      *
      * @test
@@ -36,7 +99,8 @@ class ApiPageTest extends PHPUnit_Framework_TestCase
 
         $apipage = new ApiPage($page, array(
             'default-format' => 'json',
-            'param-selector' => 'url-format'
+            'param-selector' => 'url-format',
+            'jsonp-var'       => 'api_read'
         ));
 
         $this->assertFalse($apipage->trigger);

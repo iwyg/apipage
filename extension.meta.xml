@@ -7,15 +7,19 @@
 	</types>
 	<authors>
 		<author>
-			<name github="soario">Soario Inc</name>
-			<website>http://www.soario.com</website>
+			<name github="iwyg">Thomas Appel</name>
+			<website>http://www.thomas-appel.com</website>
 		</author>
 		<author>
 			<name github="iwyg">Thomas Appel</name>
-			<email>thomas@soario.com</email>
+			<email>mail@thomas-appel.com</email>
 		</author>
 	</authors>
 	<releases>
+		<release version="0.1.7" date="2013-02-07" min="2.3.0" max="2.3.x">
+			- add jsonp output
+			- output formats can now be triggered by HTTP Accept header (`Accept: application/json`, etc)
+		</release>
 		<release version="0.1.6" date="2013-02-03" min="2.3.0" max="2.3.x">
 			- various fixes
 			- fix empty nodes
