@@ -13,6 +13,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="0.1.8" date="2013-02-08" min="2.3.0" max="2.3.x">
+			- Fixes: only override default setting when configured
+		</release>
 		<release version="0.1.7" date="2013-02-07" min="2.3.0" max="2.3.x">
 			- add jsonp output
 			- output formats can now be triggered by HTTP Accept header (`Accept: application/json`, etc)

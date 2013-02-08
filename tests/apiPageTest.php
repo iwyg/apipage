@@ -33,9 +33,10 @@ class ApiPageTest extends PHPUnit_Framework_TestCase
         $page = $this->getPageMockObj();
 
         $apipage = new ApiPage($page, array(
-            'default-format' => 'python',
+            'default-format' => 'xml',
             'param-selector' => 'url-format',
-            'jsonp-var'       => 'api_read'
+            'jsonp-var'       => 'api_read',
+            'header-override' => 'yes'
         ));
 
         $_SERVER['HTTP_ACCEPT'] = 'application/javascript';
@@ -54,9 +55,10 @@ class ApiPageTest extends PHPUnit_Framework_TestCase
         $page = $this->getPageMockObj();
 
         $apipage = new ApiPage($page, array(
-            'default-format' => 'python',
+            'default-format' => 'json',
             'param-selector' => 'url-format',
-            'jsonp-var'       => 'api_read'
+            'jsonp-var'       => 'api_read',
+            'header-override' => 'yes'
         ));
 
         $_SERVER['HTTP_ACCEPT'] = 'application/xml';
@@ -76,9 +78,10 @@ class ApiPageTest extends PHPUnit_Framework_TestCase
         $page = $this->getPageMockObj();
 
         $apipage = new ApiPage($page, array(
-            'default-format' => 'python',
-            'param-selector' => 'url-format',
-            'jsonp-var'       => 'api_read'
+            'default-format'  => 'xml',
+            'param-selector'  => 'url-format',
+            'jsonp-var'       => 'api_read',
+            'header-override' => 'yes'
         ));
 
         $_SERVER['HTTP_ACCEPT'] = 'application/json';
@@ -87,6 +90,30 @@ class ApiPageTest extends PHPUnit_Framework_TestCase
         });
         $this->assertEquals('json', $apipage->getAcceptFormat());
     }
+
+    ///**
+    // * testAcceptHeaderJSON
+    // *
+    // * @test
+    // */
+    //public function testAcceptHeaderOverride()
+    //{
+    //    $page = $this->getPageMockObj();
+
+    //    $apipage = new ApiPage($page, array(
+    //        'default-format'  => 'json',
+    //        'param-selector'  => 'url-format',
+    //        'jsonp-var'       => 'api_read',
+    //        'header-override' => 'no'
+
+    //    ));
+
+    //    $_SERVER['HTTP_ACCEPT'] = 'application/json';
+    //    $apipage->setOutput(function () {
+    //        throw new APIPageTestException('test');
+    //    });
+    //    $this->assertEquals('json', $apipage->getAcceptFormat());
+    //}
     /**
      * testSetTrigger
      *

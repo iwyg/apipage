@@ -69,9 +69,9 @@ class APIPage
      * @var array
      */
     protected static $map = array(
-        'xml'   => 'xml',
-        'json'  => 'json',
-        'jsonp' => 'jsonp',
+        'xml'        => 'xml',
+        'json'       => 'json',
+        'jsonp'      => 'jsonp',
         'javascript' => 'jsonp'
     );
 
@@ -147,6 +147,10 @@ class APIPage
 
     protected function acceptHeader()
     {
+        if (isset($this->conf['header-override']) && $this->conf['header-override'] === 'no') {
+            return false;
+        }
+
         if (isset($this->accept)) {
             return $this->accept;
         }

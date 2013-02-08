@@ -25,7 +25,8 @@ class Extension_APIPage extends Extension
     public static $defaults = array(
         'default-format' => 'json',
         'param-selector' => 'url-format',
-        'jsonp-var'      => 'api_read'
+        'jsonp-var'      => 'api_read',
+        'header-override' => 'no'
     );
     /**
      * apipage
@@ -179,6 +180,20 @@ class Extension_APIPage extends Extension
 
         $div->appendChild($label);
 
+        $hidden = Widget::Input('settings[apipage][header-override]', 'no', 'hidden');
+        $div->appendChild($hidden);
+
+        $label = Widget::Label(__('Header override'),
+            Widget::Input('settings[apipage][header-override]', 'yes', 'checkbox',
+                (isset($conf['header-override']) && $conf['header-override'] === 'yes') ? array('checked' => 'checked') : array())
+        );
+
+        $help = new XMLElement('p', 'Allow HTTP Accept header to override default output format', array('class' => 'help'));
+
+        $label->appendChild($help);
+
+        $div->appendChild($label);
+
         $fieldset->appendChild($div);
 
         $wrapper->appendChild($fieldset);
@@ -211,6 +226,11 @@ class Extension_APIPage extends Extension
     {
         if (version_compare($previous_version, '0.1.7', '<')) {
             Symphony::Configuration()->set('jsonp-var', self::$defaults['jsonp-var'], 'apipage');
+            Symphony::Configuration()->write();
+        }
+
+        if (version_compare($previous_version, '0.1.8', '<')) {
+            Symphony::Configuration()->set('header-override', self::$defaults['header-override'], 'apipage');
             Symphony::Configuration()->write();
         }
         return true;
