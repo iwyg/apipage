@@ -109,36 +109,35 @@ class APIPage
      * @param Mixed $param
      * @access public
      * @return void
+     * @throws ErrorExeption
      */
     public function setOutput(Closure $errorHandler)
     {
         $params = $this->page->Params();
 
-        if (in_array('API', $params['page-types'])) {
+        $param   = $this->conf['param-selector'];
+        $default = $this->conf['default-format'];
 
-            $param   = $this->conf['param-selector'];
-            $default = $this->conf['default-format'];
+        $format  = isset($params[$param]) ? strtolower($params[$param]) : ($this->acceptHeader() ? $this->acceptHeader() : $default);
 
-            $format  = isset($params[$param]) ? strtolower($params[$param]) : ($this->acceptHeader() ? $this->acceptHeader() : $default);
-
-            if (!isset(static::$mime[$format])) {
-                return $errorHandler();
-            }
-
-            $this->page->addHeaderToPage('Content-Type', self::$mime[$format]);
-
-            if (strtolower($format) !== 'xml') {
-                $this->trigger = true;
-                $this->jsonp = $format === 'jsonp' ? $this->conf['jsonp-var'] : null;
-            }
+        if (!isset(static::$mime[$format])) {
+            return $errorHandler();
         }
+
+        $this->page->addHeaderToPage('Content-Type', self::$mime[$format]);
+
+        if (strtolower($format) !== 'xml') {
+            $this->trigger = true;
+            $this->jsonp = $format === 'jsonp' ? $this->conf['jsonp-var'] : null;
+        }
+
     }
 
     /**
      * getAcceptFormat
      *
      * @access public
-     * @return string
+     * @return boolean
      */
     public function getAcceptFormat()
     {
@@ -155,7 +154,6 @@ class APIPage
             return $this->accept;
         }
         $header = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : null;
-
 
         if (is_null($header)) {
             return false;

@@ -108,6 +108,10 @@ class Extension_APIPage extends Extension
             $context['output'] = !is_null($this->apipage->jsonp) ?
                 sprintf('var %s = %s;', $this->apipage->jsonp, $output) : $output;
         }
+        if ($this->apipage) {
+            header("Content-Length: " . mb_strlen($context['output'], 'latin1'));
+        }
+
     }
 
     /**
@@ -119,11 +123,17 @@ class Extension_APIPage extends Extension
      */
     public function setOutputTrigger($context)
     {
-        $this->apipage = new APIPage(Frontend::Page(), Symphony::Configuration()->get('apipage'));
+        $page   = Frontend::Page();
+        $params = $page->Params();
 
-        return $this->apipage->setOutput(function () {
-            throw new SymphonyErrorPage('format does not exist', 'API is having issues', 'generic', array('header' => 'HTTP/1.0 406 Not Acceptable'));
-        });
+        if (in_array('API', $params['page-types'])) {
+
+            $this->apipage = new APIPage($page, Symphony::Configuration()->get('apipage'));
+
+            return $this->apipage->setOutput(function () {
+                throw new SymphonyErrorPage('format does not exist', 'API is having issues', 'generic', array('header' => 'HTTP/1.0 406 Not Acceptable'));
+            });
+        }
     }
 
     /**
