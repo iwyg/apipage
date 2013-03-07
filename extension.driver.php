@@ -26,6 +26,7 @@ class Extension_APIPage extends Extension
         'default-format' => 'json',
         'param-selector' => 'url-format',
         'jsonp-var'      => 'api_read',
+        'jsonp-callback' => 'api_page',
         'header-override' => 'no'
     );
     /**
@@ -106,7 +107,10 @@ class Extension_APIPage extends Extension
         if ($this->apipage && $this->apipage->trigger) {
             $output = $this->apipage->parse(new XmlToJSON($context['output']));
             $context['output'] = !is_null($this->apipage->jsonp) ?
-                sprintf('var %s = %s;', $this->apipage->jsonp, $output) : $output;
+                sprintf('var %s = %s;', $this->apipage->jsonp, $output) :
+                (
+                    $this->apipage->hasCallback() ? sprintf("%s(%s);", $this->apipage->getCallback(), $output ) : $output
+                );
         }
         if ($this->apipage) {
             header("Content-Length: " . mb_strlen($context['output'], 'latin1'));
@@ -175,14 +179,12 @@ class Extension_APIPage extends Extension
         $label = Widget::Label(__('default output format'), $select);
         $div->appendChild($label);
 
-        if ($selected === 'jsonp') {
 
-            $label = Widget::Label(__('JSONP variable name'), Widget::Input('settings[apipage][jsonp-var]',
-                isset($conf['jsonp-var']) ? $conf['jsonp-var'] : 'api_read', 'text')
-            );
+        $label = Widget::Label(__('JSONP variable name'), Widget::Input('settings[apipage][jsonp-var]',
+            isset($conf['jsonp-var']) ? $conf['jsonp-var'] : static::$defaults['jsonp-var'], 'text')
+        );
 
-            $div->appendChild($label);
-        }
+        $div->appendChild($label);
 
         $selector = Widget::Input('settings[apipage][param-selector]', $selector, 'text');
 
@@ -198,7 +200,7 @@ class Extension_APIPage extends Extension
                 (isset($conf['header-override']) && $conf['header-override'] === 'yes') ? array('checked' => 'checked') : array())
         );
 
-        $help = new XMLElement('p', 'Allow HTTP Accept header to override default output format', array('class' => 'help'));
+        $help = new XMLElement('p', __('Allow HTTP Accept header to override default output format'), array('class' => 'help'));
 
         $label->appendChild($help);
 

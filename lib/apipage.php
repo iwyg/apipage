@@ -51,6 +51,13 @@ class APIPage
     protected $accept;
 
     /**
+     * callback
+     *
+     * @var string
+     */
+    protected $callback;
+
+    /**
      * Content Type Map
      *
      * @var Array
@@ -124,13 +131,39 @@ class APIPage
             return $errorHandler();
         }
 
-        $this->page->addHeaderToPage('Content-Type', self::$mime[$format]);
 
         if (strtolower($format) !== 'xml') {
             $this->trigger = true;
             $this->jsonp = $format === 'jsonp' ? $this->conf['jsonp-var'] : null;
+
+            if (isset($_REQUEST['callback'])) {
+                $this->callback = sprintf('%s', trim($_REQUEST['callback']));
+                $format = 'jsonp';
+            }
         }
 
+        $this->page->addHeaderToPage('Content-Type', self::$mime[$format]);
+
+    }
+
+    /**
+     * hasCallback
+     *
+     * @return boolean
+     */
+    public function hasCallback()
+    {
+        return !is_null($this->callback);
+    }
+
+    /**
+     * getCallback
+     *
+     * @return mixed|string
+     */
+    public function getCallback()
+    {
+        return $this->callback;
     }
 
     /**
