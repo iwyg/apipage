@@ -1,6 +1,8 @@
 ## Synopsis
 
-Easily generate api pages with Symphony CMS.   
+Easily generate api pages with Symphony CMS. 
+
+[![Build Status](https://api.travis-ci.org/iwyg/apipage.png?branch=master)](https://travis-ci.org/iwyg/apipage)
 
 ## Dependencies
 
@@ -26,7 +28,12 @@ Easily generate api pages with Symphony CMS.
 		</xsl:stylesheet>
 		
 - do your data transformation as you would usually do.		
-		
+
+## URL Parameter
+
+- format: specify output format
+- callback: specify a callback name for jsonp requests
+
 ## FAQ
 
 - **Q:** why no php 5.2?
