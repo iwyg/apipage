@@ -17,15 +17,17 @@ Easily generate api pages with Symphony CMS.
 
 - set your template's output format to `xml`, e.g.: 
 
-		<?xml version="1.0" encoding="UTF-8"?>
-		<xsl:stylesheet version="1.0"
-		    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-			<xsl:output method="xml" omit-xml-declaration="yes" encoding="UTF-8" indent="yes" />
-			
-			<xsl:template match="/">
-				<response> <!-- do your transformations here --></response>
-			</xsl:template>
-		</xsl:stylesheet>
+```xml		
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="xml" omit-xml-declaration="yes" encoding="UTF-8" indent="yes" />
+	
+	<xsl:template match="/">
+		<response> <!-- do your transformations here --></response>
+	</xsl:template>
+</xsl:stylesheet>
+```		
 		
 - do your data transformation as you would usually do.		
 
