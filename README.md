@@ -33,8 +33,8 @@ Easily generate api pages with Symphony CMS.
 
 ## URL Parameter
 
-- format: specify output format
-- callback: specify a callback name for jsonp requests
+- `format`:   specify output format (`json|jsonp|xml`)
+- `callback`: specify a callback name for jsonp requests (format: `json`)
 
 ## FAQ
 
@@ -42,8 +42,3 @@ Easily generate api pages with Symphony CMS.
 - **A:** Brace yourself, php 5.5 is comming.
 - **Q:** I can do all this using a xml to json stylesheet. So why using this extension?
 - **A:** Sure you can. The downside of doing so is, that all these stylesheets are a bit restricted and perform expensive string operations. The extensions XMLtoJSON parser uses the php C extension SimpleXML, which is much faster. It's reliable and it's tested.  
-
-## TODOS
-
-- make XMLtoJSON parser exchangable
-- add more output formats like yml, python, etc. 
