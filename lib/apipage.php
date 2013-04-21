@@ -1,6 +1,15 @@
 <?php
 
 /**
+ * This File is part of the lib package
+ *
+ * (c) Thomas Appel <mail@thomas-appel.com>
+ *
+ * For full copyright and license information, please refer to the LICENSE file
+ * that was distributed with this package.
+ */
+
+/**
  * APIPage
  *
  * @package Symphony\Extensions\Lib
@@ -65,9 +74,9 @@ class APIPage
      * @access protected
      */
     protected static $mime = array(
-        'xml'   => 'application/xml',
-        'json'  => 'application/json',
-        'jsonp' => 'application/javascript',
+        'xml'   => 'text/xml',
+        'json'  => 'text/plain', // fuck you IE
+        'jsonp' => 'text/javascript',
     );
 
     /**
