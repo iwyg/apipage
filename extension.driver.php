@@ -23,11 +23,12 @@ class Extension_APIPage extends Extension
      *  @var Array
      */
     public static $defaults = array(
-        'default-format' => 'json',
-        'param-selector' => 'url-format',
-        'jsonp-var'      => 'api_read',
-        'jsonp-callback' => 'api_page',
-        'header-override' => 'no'
+        'default-format'         => 'json',
+        'param-selector'         => 'url-format',
+        'jsonp-var'              => 'api_read',
+        'jsonp-callback'         => 'api_page',
+        'header-override'        => 'no',
+        'disable-content-length' => 'no'
     );
     /**
      * apipage
@@ -104,7 +105,7 @@ class Extension_APIPage extends Extension
     public function parseXML($context)
     {
 
-        if ($this->apipage && $this->apipage->trigger) {
+        if ($this->apipage && false !== $this->apipage->trigger) {
             $output = $this->apipage->parse(new XmlToJSON($context['output']));
             $context['output'] = !is_null($this->apipage->jsonp) ?
                 sprintf('var %s = %s;', $this->apipage->jsonp, $output) :
@@ -112,10 +113,10 @@ class Extension_APIPage extends Extension
                     $this->apipage->hasCallback() ? sprintf("%s(%s);", $this->apipage->getCallback(), $output ) : $output
                 );
         }
-        if ($this->apipage) {
+
+        if ($this->apipage && 'no' === Symphony::Configuration()->get('disable-content-length', 'apipage') && true !== $this->apipage->isDebugging()) {
             header("Content-Length: " . mb_strlen($context['output'], 'latin1'));
         }
-
     }
 
     /**
@@ -132,7 +133,7 @@ class Extension_APIPage extends Extension
 
         if (in_array('API', $params['page-types'])) {
 
-            $this->apipage = new APIPage($page, Symphony::Configuration()->get('apipage'));
+            $this->apipage = new APIPage($page, Symphony::Configuration()->get('apipage'), isset($_GET['debug']));
 
             return $this->apipage->setOutput(function () {
                 throw new SymphonyErrorPage('format does not exist', 'API is having issues', 'generic', array('header' => 'HTTP/1.0 406 Not Acceptable'));
@@ -195,16 +196,30 @@ class Extension_APIPage extends Extension
         $hidden = Widget::Input('settings[apipage][header-override]', 'no', 'hidden');
         $div->appendChild($hidden);
 
-        $label = Widget::Label(__('Header override'),
+        $label = Widget::Label(null,
             Widget::Input('settings[apipage][header-override]', 'yes', 'checkbox',
                 (isset($conf['header-override']) && $conf['header-override'] === 'yes') ? array('checked' => 'checked') : array())
         );
 
-        $help = new XMLElement('p', __('Allow HTTP Accept header to override default output format'), array('class' => 'help'));
+        $label->setValue(__('Header override'), false);
 
-        $label->appendChild($help);
+        $help = new XMLElement('p', __('Allow HTTP Accept header to override default output format'), array('class' => 'help'));
+        $div->appendChild($label);
+        $div->appendChild($help);
+
+
+        $hidden = Widget::Input('settings[apipage][disable-content-length]', 'no', 'hidden');
+        $div->appendChild($hidden);
+        $label = Widget::Label(null,
+            Widget::Input('settings[apipage][disable-content-length]', 'yes', 'checkbox',
+                (isset($conf['disable-content-length']) && $conf['disable-content-length'] === 'yes') ? array('checked' => 'checked') : array())
+            );
+        $label->setValue(__('Disable Content Length output'), false);
+
 
         $div->appendChild($label);
+        $help = new XMLElement('p', __('Disable content length on the response header'), array('class' => 'help'));
+        $div->appendChild($help);
 
         $fieldset->appendChild($div);
 

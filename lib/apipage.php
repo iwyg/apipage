@@ -67,6 +67,13 @@ class APIPage
     protected $callback;
 
     /**
+     * debug
+     *
+     * @var bool
+     */
+    protected $debug;
+
+    /**
      * Content Type Map
      *
      * @var Array
@@ -99,10 +106,11 @@ class APIPage
      * @access public
      * @return void
      */
-    public function __construct(FrontendPage $page, array $conf)
+    public function __construct(FrontendPage $page, array $conf, $debug = false)
     {
-        $this->page = $page;
-        $this->conf = $conf;
+        $this->page   = $page;
+        $this->conf   = $conf;
+        $this->debug  = $debug;
     }
 
     /**
@@ -116,6 +124,17 @@ class APIPage
     public function parse(InterfaceParser $parser)
     {
         return $parser->parse();
+    }
+
+    /**
+     * isDebugging
+     *
+     * @access public
+     * @return bool
+     */
+    public function isDebugging()
+    {
+        return $this->debug;
     }
 
     /**
@@ -183,9 +202,15 @@ class APIPage
      */
     public function getAcceptFormat()
     {
-        return $this->accept;
+        return !is_null($this->accept) ? $this->accept : $this->conf['default-format'];
     }
 
+    /**
+     * acceptHeader
+     *
+     * @access protected
+     * @return boolean
+     */
     protected function acceptHeader()
     {
         if (isset($this->conf['header-override']) && $this->conf['header-override'] === 'no') {
