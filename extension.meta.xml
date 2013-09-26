@@ -13,6 +13,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="0.2" date="2013-05-14" min="2.3.0" max="2.3.x">
+      - node values are now treated as their inteted type
+		</release>
 		<release version="0.1.9 rv2" date="2013-05-14" min="2.3.0" max="2.3.x">
 			- allow content length header to be disabled
 			- content length header disabled for debugger
