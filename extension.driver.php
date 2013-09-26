@@ -114,8 +114,15 @@ class Extension_APIPage extends Extension
                 );
         }
 
+        header('ETag: '. $etag = hash('md5', $output));
+
         if ($this->apipage && 'no' === Symphony::Configuration()->get('disable-content-length', 'apipage') && true !== $this->apipage->isDebugging()) {
             header("Content-Length: " . mb_strlen($context['output'], 'latin1'));
+        }
+
+        if (isset($_SERVER['HTTP_IF_NONE_MATCH']) and $etag === $_SERVER['HTTP_IF_NONE_MATCH']) {
+            header('HTTP/1.1 304 Not Modified');
+            exit(0);
         }
     }
 
