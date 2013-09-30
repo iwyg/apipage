@@ -1,6 +1,6 @@
 <?php
 
-interface InterfaceParser
+interface ParserInterface
 {
     public function parse();
 }

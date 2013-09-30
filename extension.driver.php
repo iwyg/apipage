@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/lib/interfaceparser.php';
+require_once dirname(__FILE__) . '/lib/parserinterface.php';
 require_once dirname(__FILE__) . '/lib/xmltoarray.php';
 require_once dirname(__FILE__) . '/lib/xmltojson.php';
 require_once dirname(__FILE__) . '/lib/apipage.php';
@@ -68,7 +68,28 @@ class Extension_APIPage extends Extension
                 'delegate' => 'Save',
                 'callback' => 'savePreferences'
             ),
+            array(
+                'page' => '/frontend/',
+                'delegate' => 'FrontendOutputPreGenerate',
+                'callback' => 'registerHelper'
+            ),
         );
+    }
+
+    /**
+     * registerHelper
+     *
+     * @param mixed $context
+     *
+     * @access public
+     * @return mixed
+     */
+    public function registerHelper($context)
+    {
+        require_once dirname(__FILE__).'/lib/xmltojsonhelper.php';
+        require_once dirname(__FILE__).'/lib/apihelper.php';
+        $context['page']->registerPHPFunction('ApiHelper::simpleJson');
+        $context['page']->registerPHPFunction('ApiHelper::toJson');
     }
 
     /**

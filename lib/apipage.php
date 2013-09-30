@@ -116,12 +116,12 @@ class APIPage
     /**
      * render
      *
-     * @param InterfaceParser $parser
+     * @param ParserInterface $parser
      * @param String $xml
      * @access public
      * @return string
      */
-    public function parse(InterfaceParser $parser)
+    public function parse(ParserInterface $parser)
     {
         return $parser->parse();
     }

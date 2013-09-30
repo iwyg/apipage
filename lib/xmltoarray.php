@@ -7,10 +7,10 @@
  *
  * @package Symphony\Extensions\APIPage
  * @version 1.3
- * @author Thomas Appel <thomas@soario.com>
+ * @author Thomas Appel <mail@thomas-appel.com>
  * @license MIT
  */
-class XmlToArray implements InterfaceParser
+class XmlToArray implements ParserInterface
 {
 
     /**
