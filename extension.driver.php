@@ -126,25 +126,35 @@ class Extension_APIPage extends Extension
     public function parseXML($context)
     {
 
-        if ($this->apipage && false !== $this->apipage->trigger) {
-            $output = $this->apipage->parse(new XmlToJSON($context['output']));
+        if (!$this->apipage) {
+            return;
+        }
+        
+        $etag = null;
+        
+        if (false !== $this->apipage->trigger) {
+            $output = $this->apipage->parse(new XmlToJSON((string)$context['output']));
+            $etag = hash('md5', $output);
             $context['output'] = !is_null($this->apipage->jsonp) ?
                 sprintf('var %s = %s;', $this->apipage->jsonp, $output) :
                 (
                     $this->apipage->hasCallback() ? sprintf("%s(%s);", $this->apipage->getCallback(), $output ) : $output
                 );
-                
-            // set ETag for caching of static api data
-            header('ETag: '. $etag = hash('md5', $output));
+            
         }
 
         if ($this->apipage && 'no' === Symphony::Configuration()->get('disable-content-length', 'apipage') && true !== $this->apipage->isDebugging()) {
             header("Content-Length: " . mb_strlen($context['output'], 'latin1'));
         }
-
+        
         if (isset($_SERVER['HTTP_IF_NONE_MATCH']) and $etag === $_SERVER['HTTP_IF_NONE_MATCH']) {
             header('HTTP/1.1 304 Not Modified');
             exit(0);
+        }
+        
+        if (null !== $etag) {
+            // set ETag for caching of static api data
+            header('ETag: '. $etag);    
         }
     }
 
