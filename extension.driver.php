@@ -133,9 +133,10 @@ class Extension_APIPage extends Extension
                 (
                     $this->apipage->hasCallback() ? sprintf("%s(%s);", $this->apipage->getCallback(), $output ) : $output
                 );
+                
+            // set ETag for caching of static api data
+            header('ETag: '. $etag = hash('md5', $output));
         }
-
-        header('ETag: '. $etag = hash('md5', $output));
 
         if ($this->apipage && 'no' === Symphony::Configuration()->get('disable-content-length', 'apipage') && true !== $this->apipage->isDebugging()) {
             header("Content-Length: " . mb_strlen($context['output'], 'latin1'));
