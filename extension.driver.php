@@ -130,6 +130,7 @@ class Extension_APIPage extends Extension
             return;
         }
         
+        $output = '';
     
         if (false !== $this->apipage->trigger) {
             $output = $this->apipage->parse(new XmlToJSON((string)$context['output']));
