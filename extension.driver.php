@@ -51,7 +51,7 @@ class Extension_APIPage extends Extension
             array(
                 'page' => '/frontend/',
                 'delegate' => 'FrontendOutputPostGenerate',
-                'callback' => 'parseXML'
+                'callback' => 'process'
             ),
             array(
                 'page' => '/frontend/',
@@ -117,33 +117,41 @@ class Extension_APIPage extends Extension
     }
 
     /**
-     * parseXML
+     * process
      *
      * @param Mixed $context
      * @access public
      * @return void
      */
-    public function parseXML($context)
+    public function process($context)
     {
 
         if (!$this->apipage) {
             return;
         }
         
-        $etag = null;
-        
+    
         if (false !== $this->apipage->trigger) {
             $output = $this->apipage->parse(new XmlToJSON((string)$context['output']));
-            $etag = hash('md5', $output);
             $context['output'] = !is_null($this->apipage->jsonp) ?
                 sprintf('var %s = %s;', $this->apipage->jsonp, $output) :
                 (
                     $this->apipage->hasCallback() ? sprintf("%s(%s);", $this->apipage->getCallback(), $output ) : $output
                 );
-            
         }
 
-        if ($this->apipage && 'no' === Symphony::Configuration()->get('disable-content-length', 'apipage') && true !== $this->apipage->isDebugging()) {
+        $this->renderHeaders($output);
+    }
+    
+    /**
+     * @param string $etag
+     * @return void
+     */
+    protected function renderHeaders($output = '')
+    {
+        $etag = (0 < strlen($output)) ? hash('md5', $output) : null;
+        
+        if ('no' === Symphony::Configuration()->get('disable-content-length', 'apipage') && true !== $this->apipage->isDebugging()) {
             header("Content-Length: " . mb_strlen($context['output'], 'latin1'));
         }
         
