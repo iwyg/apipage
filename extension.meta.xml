@@ -13,6 +13,10 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="0.2.2" date="2014-04-11" min="2.3.0" max="2.3.x">
+      - bugfix
+      - please re-enable extension to fully work (delegate handler name changed)
+		</release>
 		<release version="0.2.1" date="2013-09-27" min="2.3.0" max="2.3.x">
       - add template helper
 		</release>
