@@ -157,7 +157,7 @@ class Extension_APIPage extends Extension
         }
         
         if (isset($_SERVER['HTTP_IF_NONE_MATCH']) and $etag === $_SERVER['HTTP_IF_NONE_MATCH']) {
-            header('HTTP/1.1 304 Not Modified');
+            header('Status: 304 Not Modified', true, 304)
             exit(0);
         }
         
